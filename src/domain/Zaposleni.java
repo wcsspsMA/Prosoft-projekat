@@ -15,15 +15,17 @@ public class Zaposleni {
     private String prezime;
     private String korisnickoIme;
     private String sifra;
+    private int telefon;
 
     public Zaposleni() {
     }
 
-    public Zaposleni(String ime, String prezime, String korisnickoIme, String sifra) {
+    public Zaposleni(String ime, String prezime, String korisnickoIme, String sifra, int telefon) {
         this.ime = ime;
         this.prezime = prezime;
         this.korisnickoIme = korisnickoIme;
         this.sifra = sifra;
+        this.telefon = telefon;
     }
 
     public Long getId() {
@@ -65,6 +67,16 @@ public class Zaposleni {
     public void setSifra(String sifra) {
         this.sifra = sifra;
     }
+
+    public int getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(int telefon) {
+        this.telefon = telefon;
+    }
+    
+    
 
     @Override
     public String toString() {

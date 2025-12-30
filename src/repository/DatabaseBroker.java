@@ -3,8 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package repository;
+import domain.Racun;
+import domain.Staza;
 import domain.Zaposleni;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -83,6 +88,7 @@ public class DatabaseBroker {
                 z2.setPrezime(rs.getString("lastname"));
                 z2.setKorisnickoIme(rs.getString("username"));
                 z2.setSifra(rs.getString("password"));
+                z2.setTelefon(rs.getInt("phone"));
              
             }
             else{
@@ -99,6 +105,35 @@ public class DatabaseBroker {
             throw ex;
         }
         
+    }
+    
+    public List<Racun> getTicketsByEmployee(Zaposleni z) throws SQLException{
+        try{
+            String query = "SELECT id, totalAmount, purchaseDate, discount, track FROM racun WHERE employee=?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, z.getId());
+            ResultSet rs = ps.executeQuery();
+            List<Racun> racuni = new ArrayList<>();
+            
+            while(rs.next()){
+                double ukupanIznos = rs.getDouble("r.totalAmount");
+                double popust = rs.getDouble("t.discount");
+                LocalDate datum = rs.getDate("pruchaseDate").toLocalDate();
+                Staza staza = Staza.valueOf(rs.getString("r.track"));
+                Long id = rs.getLong("r.id");
+                Racun r = new Racun(ukupanIznos, datum, popust, staza);
+                r.setId(id);
+                racuni.add(r);
+            }
+            rs.close();
+            ps.close();
+            return racuni;
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
     }
     
 }

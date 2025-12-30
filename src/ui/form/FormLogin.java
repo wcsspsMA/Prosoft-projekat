@@ -21,6 +21,7 @@ public class FormLogin extends javax.swing.JPanel {
     public FormLogin() {
         initComponents();
         
+        
     }
 
     /**
@@ -39,9 +40,9 @@ public class FormLogin extends javax.swing.JPanel {
         btnCancel = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
 
-        jLabel1.setText("Username:");
+        jLabel1.setText("Korisnicko ime:");
 
-        jLabel2.setText("Password:");
+        jLabel2.setText("Korisnicka sifra:");
 
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -49,14 +50,14 @@ public class FormLogin extends javax.swing.JPanel {
             }
         });
 
-        btnCancel.setText("Cancel");
+        btnCancel.setText("Odustani");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
 
-        btnLogin.setText("Log in");
+        btnLogin.setText("Potvrdi");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
@@ -71,16 +72,16 @@ public class FormLogin extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(txtPassword))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(btnLogin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(btnCancel)
                 .addGap(49, 49, 49))
         );
@@ -116,14 +117,14 @@ public class FormLogin extends javax.swing.JPanel {
             z.setSifra(password);
             Controller c = new Controller();
             Zaposleni zaposleni = c.vratiUlogovanog(z);
-            JOptionPane.showMessageDialog(this, "Uspesno ste se ulogovali", "Korisnik: " + zaposleni.getKorisnickoIme(), JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Uspesna prijava na sistem!", "Korisnik: " + zaposleni.getKorisnickoIme(), JOptionPane.INFORMATION_MESSAGE);
             
             JFrame frame = new FormMain(zaposleni);
             this.getTopLevelAncestor().setVisible(false);
             frame.setVisible(true);
         }
         catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "Korisnik sa datim kredencijalima ne postoji u bazi","Greska pri pokusaju logovanja!" , JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Korisnik sa datim kredencijalima ne postoji u bazi!","Greska pri pokusaju prijavljivanja!" , JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

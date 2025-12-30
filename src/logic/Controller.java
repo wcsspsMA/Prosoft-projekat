@@ -4,9 +4,11 @@
  */
 package logic;
 
+import domain.Racun;
 import domain.Zaposleni;
 import repository.DatabaseBroker;
 import java.lang.Exception;
+import java.util.List;
 
 /**
  *
@@ -33,6 +35,29 @@ public class Controller {
             Zaposleni zaposleni = dbbr.getEmployeeByPassword(z);
             dbbr.commit();
             return zaposleni;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public List<Racun> vratiRacunePoZaposlenom(Zaposleni z) throws Exception {
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            List<Racun> racuni = dbbr.getTicketsByEmployee(z);
+            dbbr.commit();
+            return racuni;
         }
         catch(Exception ex){
             dbbr.rollback();

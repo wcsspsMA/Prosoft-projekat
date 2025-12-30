@@ -14,7 +14,7 @@ public class Osoba {
     private String ime;
     private String prezime;
     private int telefon;
-    //treba li mi ovde atribut za kategoriju osobe
+    KategorijaOsobe kategorija;
 
     public Osoba() {
     }
@@ -56,6 +56,16 @@ public class Osoba {
     public void setTelefon(int telefon) {
         this.telefon = telefon;
     }
+
+    public KategorijaOsobe getKategorija() {
+        return kategorija;
+    }
+
+    public void setKategorija(KategorijaOsobe kategorija) {
+        this.kategorija = kategorija;
+    }
+    
+    
 
     @Override
     public String toString() {
