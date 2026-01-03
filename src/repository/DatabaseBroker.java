@@ -116,11 +116,11 @@ public class DatabaseBroker {
             List<Racun> racuni = new ArrayList<>();
             
             while(rs.next()){
-                double ukupanIznos = rs.getDouble("r.totalAmount");
-                double popust = rs.getDouble("t.discount");
-                LocalDate datum = rs.getDate("pruchaseDate").toLocalDate();
-                Staza staza = Staza.valueOf(rs.getString("r.track"));
-                Long id = rs.getLong("r.id");
+                double ukupanIznos = rs.getDouble("totalAmount");
+                double popust = rs.getDouble("discount");
+                LocalDate datum = rs.getDate("purchaseDate").toLocalDate();
+                Staza staza = Staza.valueOf(rs.getString("track"));
+                Long id = rs.getLong("id");
                 Racun r = new Racun(ukupanIznos, datum, popust, staza);
                 r.setId(id);
                 racuni.add(r);

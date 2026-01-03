@@ -9,6 +9,7 @@ import domain.Staza;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -19,6 +20,7 @@ public class RacunTableModel extends AbstractTableModel{
     private final List<Racun> racuni;
     private String[] columnNames = {"id", "totalAmount", "purchaseDate", "discount", "track"};
     private Class[] columnClass = {Long.class, Double.class, LocalDate.class, Double.class, Staza.class};
+    
 
     public RacunTableModel(List<Racun> racuni) {
         this.racuni = racuni;

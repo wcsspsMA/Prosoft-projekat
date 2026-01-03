@@ -4,7 +4,17 @@
  */
 package ui.form;
 
+import domain.Racun;
 import domain.Zaposleni;
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import logic.Controller;
+import ui.component.RacunTableModel;
 
 /**
  *
@@ -22,6 +32,7 @@ public class FormMain extends javax.swing.JFrame {
         initComponents();
         setTitle("F1 TicketSystem: " + z.getIme()+ " " + z.getPrezime());
         setExtendedState(MAXIMIZED_BOTH);
+        prepareTable();
     }
 
     /**
@@ -33,17 +44,55 @@ public class FormMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblNaslov = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableRacuni = new javax.swing.JTable();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenuMeni = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblNaslov.setText("Racuni izdati od strane zaposlenog");
+
+        jTableRacuni.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableRacuni);
+
+        jMenuMeni.setText("Meni");
+        jMenuBar2.add(jMenuMeni);
+
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblNaslov, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblNaslov, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -55,5 +104,31 @@ public class FormMain extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenu jMenuMeni;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableRacuni;
+    private javax.swing.JLabel lblNaslov;
     // End of variables declaration//GEN-END:variables
+
+    private void prepareTable() {
+        try{
+            List<Racun> racuni = new ArrayList<>();
+            Controller controller = new Controller();
+            racuni = controller.vratiRacunePoZaposlenom(user);
+            RacunTableModel model = new RacunTableModel(racuni);
+            jTableRacuni.setModel(model);
+            
+            DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+            cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+            for(int i = 0; i<jTableRacuni.getColumnCount(); i++){
+                jTableRacuni.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+            }
+            
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Greska prilikom ucitavanja podataka u tabelu!", "Greska!",JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
