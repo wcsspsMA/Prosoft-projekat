@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package repository;
+import domain.KategorijaOsobe;
 import domain.Osoba;
 import domain.Racun;
 import domain.StavkaRacuna;
@@ -140,6 +141,58 @@ public class DatabaseBroker {
 
     
     
+    public List<Osoba> getAllPersons() throws SQLException {
+        try{
+            String query = "SELECT o.id, o.firstName, o.lastName, o.phone,k.id, k.title, k.description  FROM osoba o INNER JOIN kategorijaosobe k ON(o.category=k.id)";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            List<Osoba> osobe = new ArrayList<>();
+            while(rs.next()){
+                Osoba o = new Osoba();
+                o.setId(rs.getLong("o.id"));
+                o.setIme(rs.getString("o.firstName"));
+                o.setPrezime(rs.getString("o.lastName"));
+                o.setTelefon(rs.getInt("o.phone"));
+                KategorijaOsobe cat = new KategorijaOsobe();
+                cat.setId(rs.getLong("k.id"));
+                cat.setNaziv(rs.getString("k.title"));
+                cat.setOpis(rs.getString("k.description"));
+                o.setKategorija(cat);
+                osobe.add(o);
+            }
+            rs.close();
+            statement.close();
+            return osobe;
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
     
+    public double getPriceByNameLength(String name, String length) throws SQLException {
+        try{
+            String query = "SELECT price FROM tipkarte WHERE name=? AND length=?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1,name);
+            ps.setString(2,length);
+            ResultSet rs = ps.executeQuery();
+            double cena=0;
+            if(rs.next()){
+                cena=rs.getDouble(1);
+            }
+            rs.close();
+            ps.close();
+            return cena;
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
     
 }

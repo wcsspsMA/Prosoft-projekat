@@ -4,13 +4,18 @@
  */
 package ui.form;
 
+import domain.Osoba;
+import domain.Sektor;
 import domain.Staza;
 import domain.Zaposleni;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import logic.Controller;
 import ui.component.StavkaRacunaTableModel;
 
 /**
@@ -30,6 +35,24 @@ public class FormCreateBill extends javax.swing.JDialog {
         initComponents();
         prepareTable();
         fillTracks();
+        
+        try {
+            fillPersons();
+        } catch (Exception ex) {
+            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        fillDate();
+        fillSectors();
+        fillDiscount();
+        try {
+            fillPrice();
+        } catch (Exception ex) {
+            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        fillTotalPrice();
+        
     }
 
     /**
@@ -119,10 +142,20 @@ public class FormCreateBill extends javax.swing.JDialog {
         jLabel6.setText("Iznos:");
 
         cbTrajanje.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 day", "2 day", "3 day" }));
-
-        cbSektor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbTrajanje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTrajanjeActionPerformed(evt);
+            }
+        });
 
         txtCena.setEditable(false);
+
+        txtKolicina.setText("1");
+        txtKolicina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKolicinaActionPerformed(evt);
+            }
+        });
 
         txtIznos.setEditable(false);
 
@@ -130,7 +163,11 @@ public class FormCreateBill extends javax.swing.JDialog {
 
         lblUkupanIznos3.setText("Staza:");
 
-        cbKupac.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbKupac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbKupacActionPerformed(evt);
+            }
+        });
 
         lblPopust.setText("Popust:");
 
@@ -259,8 +296,30 @@ public class FormCreateBill extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbTipKarteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipKarteActionPerformed
-        // TODO add your handling code here:
+        try {
+            fillPrice();
+        } catch (Exception ex) {
+            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        fillTotalPrice();
     }//GEN-LAST:event_cbTipKarteActionPerformed
+
+    private void cbKupacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKupacActionPerformed
+        fillDiscount();
+    }//GEN-LAST:event_cbKupacActionPerformed
+
+    private void cbTrajanjeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTrajanjeActionPerformed
+        try {
+            fillPrice();
+        } catch (Exception ex) {
+            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        fillTotalPrice();
+    }//GEN-LAST:event_cbTrajanjeActionPerformed
+
+    private void txtKolicinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKolicinaActionPerformed
+        fillTotalPrice();
+    }//GEN-LAST:event_txtKolicinaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,8 +330,8 @@ public class FormCreateBill extends javax.swing.JDialog {
     private javax.swing.JButton btnDodajStavku;
     private javax.swing.JButton btnKreirajRacun;
     private javax.swing.JButton btnObrisiStavku;
-    private javax.swing.JComboBox<String> cbKupac;
-    private javax.swing.JComboBox<String> cbSektor;
+    private javax.swing.JComboBox<Object> cbKupac;
+    private javax.swing.JComboBox<Object> cbSektor;
     private javax.swing.JComboBox<Object> cbStaza;
     private javax.swing.JComboBox<String> cbTipKarte;
     private javax.swing.JComboBox<String> cbTrajanje;
@@ -320,6 +379,56 @@ public class FormCreateBill extends javax.swing.JDialog {
 
     private void fillTracks() {
         cbStaza.setModel(new DefaultComboBoxModel<>(Staza.values()));
+    }
+
+    private void fillPersons() throws Exception {
+        Controller c = new Controller();
+        List<Osoba> osobe = c.vratiSveOsobe();
+        cbKupac.setModel(new DefaultComboBoxModel<>(osobe.toArray()));
+          
+    }
+
+    private void fillDate() {
+        LocalDate datum = LocalDate.now();
+        txtDatum.setText(datum.toString());
+    }
+
+    private void fillSectors() {
+        cbSektor.setModel(new DefaultComboBoxModel<>(Sektor.values()));
+    }
+
+    private void fillDiscount() {
+        Osoba o =(Osoba) cbKupac.getSelectedItem();
+        switch(o.getKategorija().getNaziv()){
+            case "REGULAR":
+                txtPopust.setText("0%");
+                break;
+            case "PREMIUM":
+                txtPopust.setText("10%");
+                break;
+            case "VIP":
+                txtPopust.setText("20%");
+                break;
+            default:
+                txtPopust.setText("0%");
+        }
+    }
+
+    private void fillPrice() throws Exception {
+        Controller c = new Controller();
+        String name = (String) cbTipKarte.getSelectedItem();
+        String length = (String) cbTrajanje.getSelectedItem();
+        double price = c.vratiCenuKartaTrajanje(name, length);
+        txtCena.setText(String.valueOf(price));;
+    }
+
+    private void fillTotalPrice() {
+        
+        double price =Double.parseDouble(txtCena.getText());
+        double quantity = Double.parseDouble(txtKolicina.getText());
+        if(quantity<1) JOptionPane.showMessageDialog(this, "Unesite sve podatke!","Greska pri unosu podataka!",JOptionPane.ERROR_MESSAGE);
+        double totalPrice = price*quantity;
+        txtIznos.setText(String.valueOf(totalPrice));
     }
     
     

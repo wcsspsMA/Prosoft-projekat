@@ -4,6 +4,7 @@
  */
 package logic;
 
+import domain.Osoba;
 import domain.Racun;
 import domain.Zaposleni;
 import repository.DatabaseBroker;
@@ -58,6 +59,52 @@ public class Controller {
             List<Racun> racuni = dbbr.getTicketsByEmployee(z);
             dbbr.commit();
             return racuni;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public List<Osoba> vratiSveOsobe() throws Exception{
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            List<Osoba> osobe = dbbr.getAllPersons();
+            dbbr.commit();
+            return osobe;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public double vratiCenuKartaTrajanje(String name, String length) throws Exception {
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            double cena = dbbr.getPriceByNameLength(name, length);
+            dbbr.commit();
+            return cena;
         }
         catch(Exception ex){
             dbbr.rollback();

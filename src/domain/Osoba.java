@@ -14,7 +14,7 @@ public class Osoba {
     private String ime;
     private String prezime;
     private int telefon;
-    KategorijaOsobe kategorija;
+    private KategorijaOsobe kategorija;
 
     public Osoba() {
     }
@@ -69,7 +69,7 @@ public class Osoba {
 
     @Override
     public String toString() {
-        return "Osoba: " + ime + " " + prezime;
+        return id + ". " + ime + " " + prezime;
     }
     
     
