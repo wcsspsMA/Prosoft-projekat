@@ -81,7 +81,7 @@ public class RacunTableModel extends AbstractTableModel{
         }
     }
     
-        @Override
+    @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }

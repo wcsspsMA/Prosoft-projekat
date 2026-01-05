@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package repository;
+import domain.Osoba;
 import domain.Racun;
+import domain.StavkaRacuna;
 import domain.Staza;
 import domain.Zaposleni;
 import java.sql.*;
@@ -135,5 +137,9 @@ public class DatabaseBroker {
             throw ex;
         }
     }
+
+    
+    
+    
     
 }

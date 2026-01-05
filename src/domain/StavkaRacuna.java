@@ -10,6 +10,7 @@ package domain;
  */
 public class StavkaRacuna {
     
+    private Racun racun;
     private Long rb;
     private int kolicina;
     private double cena;
@@ -20,7 +21,8 @@ public class StavkaRacuna {
     public StavkaRacuna() {
     }
 
-    public StavkaRacuna(int kolicina, double cena, double iznos, Sektor sektor, TipKarte vrstaKarte) {
+    public StavkaRacuna(Racun racun,int kolicina, double cena, double iznos, Sektor sektor, TipKarte vrstaKarte) {
+        this.racun = racun;
         this.kolicina = kolicina;
         this.cena = cena;
         this.iznos = iznos;
@@ -75,6 +77,16 @@ public class StavkaRacuna {
     public void setVrstaKarte(TipKarte vrstaKarte) {
         this.vrstaKarte = vrstaKarte;
     }
+
+    public Racun getRacun() {
+        return racun;
+    }
+
+    public void setRacun(Racun racun) {
+        this.racun = racun;
+    }
+    
+    
     
     
 }

@@ -49,6 +49,7 @@ public class FormMain extends javax.swing.JFrame {
         jTableRacuni = new javax.swing.JTable();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenuMeni = new javax.swing.JMenu();
+        jMenuKreirajRacun = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +69,15 @@ public class FormMain extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTableRacuni);
 
         jMenuMeni.setText("Meni");
+
+        jMenuKreirajRacun.setText("Kreiraj Racun");
+        jMenuKreirajRacun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuKreirajRacunActionPerformed(evt);
+            }
+        });
+        jMenuMeni.add(jMenuKreirajRacun);
+
         jMenuBar2.add(jMenuMeni);
 
         setJMenuBar(jMenuBar2);
@@ -98,6 +108,16 @@ public class FormMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuKreirajRacunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuKreirajRacunActionPerformed
+        try{
+            FormCreateBill forma = new FormCreateBill(this, true, user);
+            forma.setVisible(true);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuKreirajRacunActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -105,6 +125,7 @@ public class FormMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuKreirajRacun;
     private javax.swing.JMenu jMenuMeni;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRacuni;
