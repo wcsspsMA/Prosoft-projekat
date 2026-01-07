@@ -4,9 +4,12 @@
  */
 package ui.form;
 
+import domain.KategorijaOsobe;
 import domain.Osoba;
 import domain.Sektor;
+import domain.StavkaRacuna;
 import domain.Staza;
+import domain.TipKarte;
 import domain.Zaposleni;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,18 +36,14 @@ public class FormCreateBill extends javax.swing.JDialog {
         super(parent, modal);
         this.user=z;
         initComponents();
+        setLocationRelativeTo(null);
+        setTitle("F1 TicketSystem: Kreiranje racuna" );
         prepareTable();
         fillTracks();
-        
-        try {
-            fillPersons();
-        } catch (Exception ex) {
-            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        
         fillDate();
         fillSectors();
         fillDiscount();
+        
         try {
             fillPrice();
         } catch (Exception ex) {
@@ -66,7 +65,7 @@ public class FormCreateBill extends javax.swing.JDialog {
 
         lblDatum = new javax.swing.JLabel();
         txtDatum = new javax.swing.JTextField();
-        lblKupac = new javax.swing.JLabel();
+        lblImeKupca = new javax.swing.JLabel();
         lbl1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         cbTipKarte = new javax.swing.JComboBox<>();
@@ -88,10 +87,16 @@ public class FormCreateBill extends javax.swing.JDialog {
         lblUkupanIznos = new javax.swing.JLabel();
         lblUkupanIznos3 = new javax.swing.JLabel();
         cbStaza = new javax.swing.JComboBox<>();
-        cbKupac = new javax.swing.JComboBox<>();
         lblPopust = new javax.swing.JLabel();
         txtPopust = new javax.swing.JTextField();
         txtUkupanIznos = new javax.swing.JTextField();
+        txtImeKupca = new javax.swing.JTextField();
+        lblPrezimeKupca = new javax.swing.JLabel();
+        txtPrezimeKupca = new javax.swing.JTextField();
+        lblTelefon = new javax.swing.JLabel();
+        txtTelefon = new javax.swing.JTextField();
+        lblKategorija = new javax.swing.JLabel();
+        cbKategorija = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -99,7 +104,7 @@ public class FormCreateBill extends javax.swing.JDialog {
 
         txtDatum.setEditable(false);
 
-        lblKupac.setText("Kupac:");
+        lblImeKupca.setText("Ime:");
 
         lbl1.setText("Dodavanje stavki kupovine u racun");
 
@@ -113,6 +118,11 @@ public class FormCreateBill extends javax.swing.JDialog {
         });
 
         btnDodajStavku.setText("Dodaj Stavku");
+        btnDodajStavku.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDodajStavkuActionPerformed(evt);
+            }
+        });
 
         tblStavke.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -130,6 +140,11 @@ public class FormCreateBill extends javax.swing.JDialog {
         btnObrisiStavku.setText("Obrisi Stavku");
 
         btnKreirajRacun.setText("Kreiraj Racun");
+        btnKreirajRacun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKreirajRacunActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Trajanje:");
 
@@ -163,17 +178,19 @@ public class FormCreateBill extends javax.swing.JDialog {
 
         lblUkupanIznos3.setText("Staza:");
 
-        cbKupac.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbKupacActionPerformed(evt);
-            }
-        });
-
         lblPopust.setText("Popust:");
 
         txtPopust.setEditable(false);
 
         txtUkupanIznos.setEditable(false);
+
+        lblPrezimeKupca.setText("Prezime:");
+
+        lblTelefon.setText("Broj telefona:");
+
+        lblKategorija.setText("Kategorija");
+
+        cbKategorija.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "REGULAR", "PREMIUM", "VIP" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,45 +212,52 @@ public class FormCreateBill extends javax.swing.JDialog {
                             .addComponent(lbl1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnDodajStavku)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(30, 30, 30)))
+                                    .addComponent(btnDodajStavku)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(15, 15, 15)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cbTipKarte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cbTrajanje, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cbSektor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblKupac, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(lblUkupanIznos, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblImeKupca, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbKupac, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtUkupanIznos))))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lblKolicina, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                                .addComponent(lblCena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblUkupanIznos3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(lblPopust, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtUkupanIznos)
+                                    .addComponent(txtImeKupca)
+                                    .addComponent(txtTelefon))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCena)
-                            .addComponent(txtKolicina)
-                            .addComponent(txtIznos)
-                            .addComponent(cbStaza, 0, 133, Short.MAX_VALUE)
-                            .addComponent(txtPopust))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblKolicina, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                                    .addComponent(lblCena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblUkupanIznos3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblPopust, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblKategorija, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCena)
+                                    .addComponent(txtKolicina)
+                                    .addComponent(txtIznos)
+                                    .addComponent(cbStaza, 0, 133, Short.MAX_VALUE)
+                                    .addComponent(txtPopust)
+                                    .addComponent(cbKategorija, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPrezimeKupca, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPrezimeKupca)))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
@@ -253,14 +277,22 @@ public class FormCreateBill extends javax.swing.JDialog {
                     .addComponent(cbStaza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblKupac)
-                    .addComponent(cbKupac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPopust)
-                    .addComponent(txtPopust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblImeKupca)
+                    .addComponent(txtImeKupca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPrezimeKupca)
+                    .addComponent(txtPrezimeKupca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTelefon)
+                    .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblKategorija)
+                    .addComponent(cbKategorija, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUkupanIznos)
-                    .addComponent(txtUkupanIznos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUkupanIznos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPopust)
+                    .addComponent(txtPopust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbl1)
                 .addGap(18, 18, 18)
@@ -289,7 +321,7 @@ public class FormCreateBill extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnObrisiStavku)
                     .addComponent(btnKreirajRacun))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -304,10 +336,6 @@ public class FormCreateBill extends javax.swing.JDialog {
         fillTotalPrice();
     }//GEN-LAST:event_cbTipKarteActionPerformed
 
-    private void cbKupacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKupacActionPerformed
-        fillDiscount();
-    }//GEN-LAST:event_cbKupacActionPerformed
-
     private void cbTrajanjeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTrajanjeActionPerformed
         try {
             fillPrice();
@@ -321,6 +349,30 @@ public class FormCreateBill extends javax.swing.JDialog {
         fillTotalPrice();
     }//GEN-LAST:event_txtKolicinaActionPerformed
 
+    private void btnDodajStavkuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajStavkuActionPerformed
+        try {
+            String nazivKarte =(String) cbTipKarte.getSelectedItem();
+            String trajanje = (String) cbTrajanje.getSelectedItem();
+            Sektor sektor = (Sektor)cbSektor.getSelectedItem();
+            double cena = Double.parseDouble(txtCena.getText());
+            int kol = Integer.parseInt(txtKolicina.getText());
+            double iznos = Double.parseDouble(txtIznos.getText());
+            Controller c = new Controller();
+            TipKarte tk = c.vratiTipKarte(nazivKarte, trajanje, cena);
+            StavkaRacuna sr = new StavkaRacuna(kol, cena, iznos, sektor, tk);
+            StavkaRacunaTableModel model = (StavkaRacunaTableModel) tblStavke.getModel();
+            model.addStavka(sr);
+        } catch (Exception ex) {
+            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_btnDodajStavkuActionPerformed
+
+    private void btnKreirajRacunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKreirajRacunActionPerformed
+        
+    }//GEN-LAST:event_btnKreirajRacunActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -330,7 +382,7 @@ public class FormCreateBill extends javax.swing.JDialog {
     private javax.swing.JButton btnDodajStavku;
     private javax.swing.JButton btnKreirajRacun;
     private javax.swing.JButton btnObrisiStavku;
-    private javax.swing.JComboBox<Object> cbKupac;
+    private javax.swing.JComboBox<String> cbKategorija;
     private javax.swing.JComboBox<Object> cbSektor;
     private javax.swing.JComboBox<Object> cbStaza;
     private javax.swing.JComboBox<String> cbTipKarte;
@@ -343,17 +395,23 @@ public class FormCreateBill extends javax.swing.JDialog {
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lblCena;
     private javax.swing.JLabel lblDatum;
+    private javax.swing.JLabel lblImeKupca;
+    private javax.swing.JLabel lblKategorija;
     private javax.swing.JLabel lblKolicina;
-    private javax.swing.JLabel lblKupac;
     private javax.swing.JLabel lblPopust;
+    private javax.swing.JLabel lblPrezimeKupca;
+    private javax.swing.JLabel lblTelefon;
     private javax.swing.JLabel lblUkupanIznos;
     private javax.swing.JLabel lblUkupanIznos3;
     private javax.swing.JTable tblStavke;
     private javax.swing.JTextField txtCena;
     private javax.swing.JTextField txtDatum;
+    private javax.swing.JTextField txtImeKupca;
     private javax.swing.JTextField txtIznos;
     private javax.swing.JTextField txtKolicina;
     private javax.swing.JTextField txtPopust;
+    private javax.swing.JTextField txtPrezimeKupca;
+    private javax.swing.JTextField txtTelefon;
     private javax.swing.JTextField txtUkupanIznos;
     // End of variables declaration//GEN-END:variables
 
@@ -368,6 +426,7 @@ public class FormCreateBill extends javax.swing.JDialog {
             for(int i = 0; i<tblStavke.getColumnCount(); i++){
                 tblStavke.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
             }
+            tblStavke.getColumnModel().getColumn(3).setPreferredWidth(150);
             
         }
         catch(Exception ex){
@@ -381,12 +440,7 @@ public class FormCreateBill extends javax.swing.JDialog {
         cbStaza.setModel(new DefaultComboBoxModel<>(Staza.values()));
     }
 
-    private void fillPersons() throws Exception {
-        Controller c = new Controller();
-        List<Osoba> osobe = c.vratiSveOsobe();
-        cbKupac.setModel(new DefaultComboBoxModel<>(osobe.toArray()));
-          
-    }
+
 
     private void fillDate() {
         LocalDate datum = LocalDate.now();
@@ -398,8 +452,8 @@ public class FormCreateBill extends javax.swing.JDialog {
     }
 
     private void fillDiscount() {
-        Osoba o =(Osoba) cbKupac.getSelectedItem();
-        switch(o.getKategorija().getNaziv()){
+        String cat =(String)cbKategorija.getSelectedItem();
+        switch(cat){
             case "REGULAR":
                 txtPopust.setText("0%");
                 break;

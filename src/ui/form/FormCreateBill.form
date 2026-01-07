@@ -41,19 +41,14 @@
                           <Component id="lbl1" alignment="0" min="-2" pref="221" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="btnDodajStavku" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel2" alignment="1" min="-2" pref="85" max="-2" attributes="0"/>
-                                          <Component id="jLabel3" alignment="1" min="-2" pref="85" max="-2" attributes="0"/>
-                                          <Component id="jLabel1" min="-2" pref="85" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="30" pref="30" max="-2" attributes="0"/>
+                                  <Component id="btnDodajStavku" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel2" alignment="1" min="-2" pref="85" max="-2" attributes="0"/>
+                                      <Component id="jLabel3" alignment="1" min="-2" pref="85" max="-2" attributes="0"/>
+                                      <Component id="jLabel1" min="-2" pref="85" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="cbTipKarte" min="-2" max="-2" attributes="0"/>
                                   <Component id="cbTrajanje" alignment="0" max="32767" attributes="0"/>
@@ -62,38 +57,51 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblKupac" min="-2" pref="99" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="lblUkupanIznos" min="-2" pref="99" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                   </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblImeKupca" alignment="0" min="-2" pref="99" max="-2" attributes="0"/>
+                                          <Component id="lblTelefon" min="-2" pref="99" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cbKupac" max="32767" attributes="0"/>
                                   <Component id="txtUkupanIznos" max="32767" attributes="0"/>
+                                  <Component id="txtImeKupca" max="32767" attributes="0"/>
+                                  <Component id="txtTelefon" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lblKolicina" alignment="0" pref="73" max="32767" attributes="0"/>
-                              <Component id="lblCena" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jLabel6" max="32767" attributes="0"/>
-                              <Component id="lblUkupanIznos3" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="lblPopust" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtCena" max="32767" attributes="0"/>
-                          <Component id="txtKolicina" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtIznos" max="32767" attributes="0"/>
-                          <Component id="cbStaza" pref="133" max="32767" attributes="0"/>
-                          <Component id="txtPopust" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="lblKolicina" alignment="0" pref="73" max="32767" attributes="0"/>
+                                  <Component id="lblCena" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel6" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="lblUkupanIznos3" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="lblPopust" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
+                                  <Component id="lblKategorija" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtCena" max="32767" attributes="0"/>
+                                  <Component id="txtKolicina" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtIznos" max="32767" attributes="0"/>
+                                  <Component id="cbStaza" pref="133" max="32767" attributes="0"/>
+                                  <Component id="txtPopust" max="32767" attributes="0"/>
+                                  <Component id="cbKategorija" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="lblPrezimeKupca" min="-2" pref="88" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtPrezimeKupca" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -120,15 +128,24 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblKupac" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cbKupac" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblPopust" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPopust" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblImeKupca" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtImeKupca" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblPrezimeKupca" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtPrezimeKupca" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTelefon" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblKategorija" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbKategorija" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblUkupanIznos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtUkupanIznos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblPopust" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtPopust" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="lbl1" min="-2" max="-2" attributes="0"/>
@@ -162,7 +179,7 @@
                   <Component id="btnObrisiStavku" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnKreirajRacun" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="19" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -178,9 +195,9 @@
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblKupac">
+    <Component class="javax.swing.JLabel" name="lblImeKupca">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Kupac:"/>
+        <Property name="text" type="java.lang.String" value="Ime:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbl1">
@@ -214,6 +231,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Dodaj Stavku"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDodajStavkuActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
 
@@ -242,6 +262,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Kreiraj Racun"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKreirajRacunActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -333,19 +356,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Object&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cbKupac">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbKupacActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Object&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JLabel" name="lblPopust">
       <Properties>
         <Property name="text" type="java.lang.String" value="Popust:"/>
@@ -360,6 +370,41 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtImeKupca">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPrezimeKupca">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Prezime:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtPrezimeKupca">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTelefon">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Broj telefona:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtTelefon">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblKategorija">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Kategorija"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cbKategorija">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="REGULAR"/>
+            <StringItem index="1" value="PREMIUM"/>
+            <StringItem index="2" value="VIP"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

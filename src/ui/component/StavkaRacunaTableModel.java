@@ -16,8 +16,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class StavkaRacunaTableModel extends AbstractTableModel{
     private final List<StavkaRacuna> stavkeRacuna;
-    private String[] columnNames = {"rb", "quantity", "price", "amount", "ticketType","sector"};
-    private Class[] columnClass = {Long.class, Integer.class, Double.class, Double.class, TipKarte.class, Sektor.class};
+    private String[] columnNames = {"quantity", "price", "amount", "ticketType","sector"};
+    private Class[] columnClass = {Integer.class, Double.class, Double.class, TipKarte.class, Sektor.class};
 
     public StavkaRacunaTableModel(List<StavkaRacuna> stavkeRacuna) {
         this.stavkeRacuna = stavkeRacuna;
@@ -31,7 +31,7 @@ public class StavkaRacunaTableModel extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return 5;
     }
 
     @Override
@@ -40,16 +40,14 @@ public class StavkaRacunaTableModel extends AbstractTableModel{
 
         switch (columnIndex) {
             case 0:
-                return stavka.getRb();
-            case 1:
                 return stavka.getKolicina();
-            case 2:
+            case 1:
                 return stavka.getCena();
-            case 3:
+            case 2:
                 return stavka.getIznos();
-            case 4:
+            case 3:
                 return stavka.getVrstaKarte();
-            case 5:
+            case 4:
                 return stavka.getSektor();
             default:
                 return "n/a";
@@ -62,21 +60,18 @@ public class StavkaRacunaTableModel extends AbstractTableModel{
 
         switch (columnIndex) {
             case 0:
-                stavka.setRb((Long)aValue);
-                break;
-            case 1:
                 stavka.setKolicina((int)aValue);
                 break;
-            case 2:
+            case 1:
                 stavka.setCena((double)aValue);
                 break;
-            case 3:
+            case 2:
                 stavka.setIznos((double)aValue);
                 break;
-            case 4:
+            case 3:
                 stavka.setVrstaKarte((TipKarte)aValue);
                 break;
-            case 5:
+            case 4:
                 stavka.setSektor(Sektor.valueOf(aValue.toString()));
                 break;
         }
@@ -90,6 +85,12 @@ public class StavkaRacunaTableModel extends AbstractTableModel{
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columnClass[columnIndex];
+    }
+    
+    public void addStavka(StavkaRacuna sr) {
+        stavkeRacuna.add(sr);
+        int lastIndex = stavkeRacuna.size()-1;
+        fireTableRowsInserted(lastIndex, lastIndex);
     }
     
     

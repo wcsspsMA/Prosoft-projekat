@@ -68,7 +68,7 @@ public class TipKarte {
 
     @Override
     public String toString() {
-        return naziv + " " + trajanje;
+        return  naziv + " " + trajanje;
     }
     
     

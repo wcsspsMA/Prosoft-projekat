@@ -6,6 +6,7 @@ package logic;
 
 import domain.Osoba;
 import domain.Racun;
+import domain.TipKarte;
 import domain.Zaposleni;
 import repository.DatabaseBroker;
 import java.lang.Exception;
@@ -105,6 +106,52 @@ public class Controller {
             double cena = dbbr.getPriceByNameLength(name, length);
             dbbr.commit();
             return cena;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public TipKarte vratiTipKarte(String name, String len, double price) throws Exception {
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            TipKarte tk = dbbr.getTicketType(name, len, price);
+            dbbr.commit();
+            return tk;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public Racun instancirajRacun(Racun r) throws Exception{
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            Racun racun = dbbr.createBill(r);
+            dbbr.commit();
+            return racun;
         }
         catch(Exception ex){
             dbbr.rollback();

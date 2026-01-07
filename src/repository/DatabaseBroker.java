@@ -8,6 +8,7 @@ import domain.Osoba;
 import domain.Racun;
 import domain.StavkaRacuna;
 import domain.Staza;
+import domain.TipKarte;
 import domain.Zaposleni;
 import java.sql.*;
 import java.time.LocalDate;
@@ -187,6 +188,61 @@ public class DatabaseBroker {
             ps.close();
             return cena;
             
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
+    public TipKarte getTicketType(String name, String length, double price) throws SQLException {
+        try{
+            String query = "SELECT * FROM tipkarte WHERE name=? AND length=? AND price=?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, name);
+            ps.setString(2, length);
+            ps.setDouble(3, price);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Long id = rs.getLong("id");
+                String title = rs.getString("name");
+                String len = rs.getString("length");
+                String des = rs.getString("description");
+                double cost = rs.getDouble("price");
+                TipKarte tk = new TipKarte(title, len, des, cost);
+                tk.setId(id);
+                return tk;
+            }
+            rs.close();
+            ps.close();
+            return null;
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
+    public Racun createBill(Racun r) throws SQLException {
+        try{
+            String query = "INSERT INTO racun(totalAmount,purchaseDate,discount,track,employee,person) VALUES (?,?,?,?,?,?)";
+            PreparedStatement ps = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+            ps.setDouble(1, r.getUkupanIznos());
+            ps.setDate(2, Date.valueOf(r.getDatumKupovine()));
+            ps.setDouble(3, r.getPopust());
+            ps.setString(4, r.getStaza().toString());
+            ps.setLong(5,r.getRadnik().getId());
+            ps.setLong(6,r.getKupac().getId());
+            int  res = ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()){
+                r.setId(rs.getLong(1));
+            }
+            rs.close();
+            ps.close();
+            return r;
         }
         catch(SQLException ex){
             System.out.println("Doslo je do greske!");

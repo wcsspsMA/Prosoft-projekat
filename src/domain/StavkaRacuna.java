@@ -21,8 +21,7 @@ public class StavkaRacuna {
     public StavkaRacuna() {
     }
 
-    public StavkaRacuna(Racun racun,int kolicina, double cena, double iznos, Sektor sektor, TipKarte vrstaKarte) {
-        this.racun = racun;
+    public StavkaRacuna(int kolicina, double cena, double iznos, Sektor sektor, TipKarte vrstaKarte) {
         this.kolicina = kolicina;
         this.cena = cena;
         this.iznos = iznos;
