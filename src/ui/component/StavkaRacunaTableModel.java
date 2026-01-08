@@ -7,6 +7,7 @@ package ui.component;
 import domain.Sektor;
 import domain.StavkaRacuna;
 import domain.TipKarte;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -93,5 +94,8 @@ public class StavkaRacunaTableModel extends AbstractTableModel{
         fireTableRowsInserted(lastIndex, lastIndex);
     }
     
+    public List<StavkaRacuna> getStavke() {
+        return new ArrayList<>(stavkeRacuna);
+    }
     
 }

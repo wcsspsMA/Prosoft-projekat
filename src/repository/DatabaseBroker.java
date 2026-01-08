@@ -251,4 +251,85 @@ public class DatabaseBroker {
         }
     }
     
+    public KategorijaOsobe getPersonsCategory(String title) throws SQLException{
+        try{
+            String query = "SELECT * from kategorijaosobe WHERE title=?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, title);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Long id = rs.getLong("id");
+                String naziv = rs.getString("title");
+                String des = rs.getString("description");
+                KategorijaOsobe cat = new KategorijaOsobe(naziv, des);
+                cat.setId(id);
+                return cat;
+            }
+            else{
+                throw new SQLException("Ne postoji ta kategorija u bazi!");
+            }
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
+    public void createBillPart(StavkaRacuna sr) throws SQLException {
+        try{
+            String query = "INSERT INTO stavkaracuna(idRacun,rb,quantity,price,amount,ticketType,sector) VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, sr.getRacun().getId());
+            ps.setLong(2, sr.getRb());
+            ps.setInt(3, sr.getKolicina());
+            ps.setDouble(4, sr.getCena());
+            ps.setDouble(5, sr.getIznos());
+            ps.setLong(6,sr.getVrstaKarte().getId());
+            ps.setString(7,sr.getSektor().toString());
+            int res = ps.executeUpdate();
+            if(res==1){
+                System.out.println("Uspesno kreirana stavka!");
+            }
+            else{
+                throw new SQLException("Neuspesno unosenje stavke!");
+            }
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
+    public Osoba createPerson (Osoba o) throws SQLException {
+        try{
+            String query = "INSERT INTO osoba(firstname,lastName,phone,category) VALUES (?,?,?,?)";
+            PreparedStatement ps = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,o.getIme());
+            ps.setString(2,o.getPrezime());
+            ps.setInt(3, o.getTelefon());
+            ps.setLong(4, o.getKategorija().getId());
+            int res = ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()){
+                o.setId(rs.getLong(1));
+            }
+            else{
+                throw new SQLException("Neuspesno kreiranje osobe!");
+            }
+            rs.close();
+            ps.close();
+
+            return o;
+            
+        }
+        catch(SQLException ex){
+            System.out.println("Doslo je do greske!");
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
 }

@@ -4,8 +4,10 @@
  */
 package logic;
 
+import domain.KategorijaOsobe;
 import domain.Osoba;
 import domain.Racun;
+import domain.StavkaRacuna;
 import domain.TipKarte;
 import domain.Zaposleni;
 import repository.DatabaseBroker;
@@ -162,4 +164,73 @@ public class Controller {
             dbbr.disconnect();
         }
     }
+    
+    public KategorijaOsobe vratiKategorijuOsobe(String title) throws Exception {
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            KategorijaOsobe cat = dbbr.getPersonsCategory(title);
+            dbbr.commit();
+            return cat;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public Osoba kreirajOsobu(Osoba o) throws Exception {
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            Osoba osoba= dbbr.createPerson(o);
+            dbbr.commit();
+            return osoba;
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
+    public void kreirajStavku(StavkaRacuna sr) throws Exception {
+        try{
+            dbbr.connect();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            throw ex;
+        }
+        try{
+            dbbr.createBillPart(sr);
+            dbbr.commit();
+        }
+        catch(Exception ex){
+            dbbr.rollback();
+            ex.printStackTrace();
+            throw ex;
+        }
+        finally{
+            dbbr.disconnect();
+        }
+    }
+    
 }

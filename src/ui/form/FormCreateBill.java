@@ -6,6 +6,7 @@ package ui.form;
 
 import domain.KategorijaOsobe;
 import domain.Osoba;
+import domain.Racun;
 import domain.Sektor;
 import domain.StavkaRacuna;
 import domain.Staza;
@@ -13,6 +14,7 @@ import domain.TipKarte;
 import domain.Zaposleni;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -191,6 +193,11 @@ public class FormCreateBill extends javax.swing.JDialog {
         lblKategorija.setText("Kategorija");
 
         cbKategorija.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "REGULAR", "PREMIUM", "VIP" }));
+        cbKategorija.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbKategorijaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -362,6 +369,18 @@ public class FormCreateBill extends javax.swing.JDialog {
             StavkaRacuna sr = new StavkaRacuna(kol, cena, iznos, sektor, tk);
             StavkaRacunaTableModel model = (StavkaRacunaTableModel) tblStavke.getModel();
             model.addStavka(sr);
+            String popustText = txtPopust.getText();
+            double popust = Double.parseDouble(popustText.replace("%", ""));
+            List<StavkaRacuna> stavke = model.getStavke();
+            double total = 0;
+            for(int i=0;i<stavke.size();i++){
+                double ukupno = 0;
+                ukupno += stavke.get(i).getIznos();
+                double mul = (100-popust)/100;
+                total += ukupno*mul;    
+            }
+            txtUkupanIznos.setText(String.valueOf(total));
+            
         } catch (Exception ex) {
             System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
@@ -370,8 +389,41 @@ public class FormCreateBill extends javax.swing.JDialog {
     }//GEN-LAST:event_btnDodajStavkuActionPerformed
 
     private void btnKreirajRacunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKreirajRacunActionPerformed
-        
+        try {
+            String fName = txtImeKupca.getText();
+            String lName = txtPrezimeKupca.getText();
+            int tel = Integer.valueOf(txtTelefon.getText());
+            String nazivKategorije = cbKategorija.getSelectedItem().toString();
+            Controller controller = new Controller();
+            KategorijaOsobe cat = controller.vratiKategorijuOsobe(nazivKategorije);
+            Osoba o = new Osoba(fName, lName, tel,cat);
+            Osoba kupac = controller.kreirajOsobu(o);
+            StavkaRacunaTableModel model = (StavkaRacunaTableModel)tblStavke.getModel();
+            List<StavkaRacuna> stavke = model.getStavke();
+            Staza track = Staza.valueOf(cbStaza.getSelectedItem().toString());
+            String datumStr = txtDatum.getText();
+            LocalDate datumKup = LocalDate.parse(datumStr);
+            String popustText = txtPopust.getText();
+            double popust = Double.parseDouble(popustText.replace("%", ""));
+            double ukupanTrosak = Double.parseDouble(txtUkupanIznos.getText());
+            Racun r = new Racun(ukupanTrosak, datumKup, popust, track, user, kupac);
+            Racun kreiran = controller.instancirajRacun(r);
+            for(int i =0;i<stavke.size();i++){
+                StavkaRacuna s = stavke.get(i);
+                s.setRb((long)(i+1));
+                s.setRacun(kreiran);
+                controller.kreirajStavku(s);
+            }
+            JOptionPane.showMessageDialog(this, "Uspesno kreiran racun!", "Kreiranje racuna: Uspesno!", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (Exception ex) {
+            System.getLogger(FormCreateBill.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }//GEN-LAST:event_btnKreirajRacunActionPerformed
+
+    private void cbKategorijaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbKategorijaActionPerformed
+        fillDiscount();
+    }//GEN-LAST:event_cbKategorijaActionPerformed
 
     /**
      * @param args the command line arguments

@@ -19,10 +19,11 @@ public class Osoba {
     public Osoba() {
     }
 
-    public Osoba(String ime, String prezime, int telefon) {
+    public Osoba(String ime, String prezime, int telefon,KategorijaOsobe cat) {
         this.ime = ime;
         this.prezime = prezime;
         this.telefon = telefon;
+        this.kategorija = cat;
     }
 
     public Long getId() {
